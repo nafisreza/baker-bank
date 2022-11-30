@@ -26,5 +26,84 @@
             <button class="login-btn">Log in &rarr;</button>
         </form>
     </nav>
+
+    <main class="app">
+        <!--Balance-->
+        <div class="balance">
+            <div>
+                <p class="balance-label">Current Balance</p>
+                <p class="balance-date">As of <span class="date">01/12/2022</span></p>
+            </div>
+            <p class="balance-value">6900$</p>
+        </div>
+
+        <!--Movement-->
+        <div class="movements">
+            <div class="movement-row">
+                <div class="movement-type movement-type-deposit">5 Deposit</div>
+                <div class="movement-date">7 Days Ago</div>
+                <div class="movement-value">5353$</div>
+            </div>
+            <div class="movement-row">
+                <div class="movement-type movement-type-withrawal">5 Withdrawal</div>
+                <div class="movement-date">12/01/2022</div>
+                <div class="movement-value">-4353$</div>
+            </div>
+        </div>
+
+        <!--Summary-->
+        <div class="summary">
+            <p class="summary-label">In</p>
+            <p class="summary-value summary-value-in">4244$</p>
+            <p class="summary-label">Out</p>
+            <p class="summary-value summary-value-out">1244$</p>
+            <p class="summary-label">Interest</p>
+            <p class="summary-value summary-value-interest">124$</p>
+            <button class="btn-sort">Sort &downarrow;</button>
+        </div>
+
+        <!--Transfers-->
+        <div class="operation operation-transfer">
+            <h2>Transfer Money</h2>
+            <form class="form form-transfer">
+                <input type="text" class="form-input form-input-to">
+                <input type="number" class="form-input form-input-amount">
+                <button class="form-btn form-btn-transfer">&rarr;</button>
+                <label class="form-label">Transfer to</label>
+                <label class="form-label">Amount</label>
+            </form>
+        </div>
+
+        <!--Loan-->
+        <div class="operation operation-loan">
+            <h2>Request Loan</h2>
+            <form class="form form-loan">
+                <input type="number" class="form-input form-input-loan-amount">
+                <button class="form-btn form-btn-loan">&rarr;</button>
+                <label class="form-label form-label-loan">Amount</label>
+            </form>
+        </div>
+
+        <div class="operation operation-close">
+            <h2>Close Account</h2>
+            <form class="form form-close">
+                <input type="text" class="form-input form-input-username">
+                <input type="password" class="form-input form-input-password">
+                <button class="form-btn form-btn-close">&rarr;</button>
+                <label class="form-label">Confirm Username</label>
+                <label class="form-label">Confirm Password</label> 
+            </form>
+        </div>
+
+        <!--Logout-->
+        <p class="logout-timer">
+            You will be logged out in <span class="timer">02:00</span>
+        </p>
+    </main>
+
+    <footer>
+        &copy; <span class="copyright-year">2022</span>
+        <strong>Baker Bank</strong> by Nafis. All rights reserved.
+    </footer>
 </body>
 </html>
