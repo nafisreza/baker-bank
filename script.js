@@ -94,4 +94,34 @@ const accounts = [
   }
   displayMovements(accounts[0])
 
-  
+  /////////////////////////////////////////////////////////////
+  // Summary
+  /////////////////////////////////////////////////////////////
+
+  function displaySummary(account){
+    //Incoming
+    const incoming = account.movements
+    .filter((move) => move > 0)                  // Getting the array of deposits
+    .reduce((acc, deposit) => acc + deposit, 0); // Summing up the deposits array
+
+    labelSumIn.textContent = `${incoming}$`
+
+    //Outgoing
+    const outgoing = account.movements
+    .filter((move) => move < 0)                        // Getting the array of withdrawals
+    .reduce((acc, withdrawal) => acc + withdrawal, 0); // Summing up the withdrawals array
+    
+    labelSumOut.textContent = `${outgoing}$`
+
+    //Interest
+    const interest = account.movements
+    .filter((move) => move > 0)                                    // Getting the array of deposits
+    .map((deposit) => (deposit * account.interestRate) / 100)      // Getting the array of interested amounts
+    .filter((interest) => interest >= 1)                           // Only Interest greater than 1% will be accepted (Varies from bank to bank)
+    .reduce((acc, interestedAmount) => acc + interestedAmount , 0) // Summing the array of interested amounts
+
+    labelSumInterest.textContent = `${interest}$`
+  }
+
+  displaySummary(accounts[0])
+
