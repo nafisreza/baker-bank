@@ -110,5 +110,171 @@ nav{
 }
 
 .movements{
-    
+    grid-row: 2 / span 3;
+    background-color: #fff;
+    overflow-y: scroll;
+}
+
+.movement-row{
+    padding: 2.5rem 4rem;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+}
+
+.movement-type{
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-transform: uppercase;  
+    padding: 0.1rem 1rem;
+    border-radius: 10px;
+    margin-right: 2rem;
+}
+
+.movement-date{
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: #666;
+}
+
+.movement-type-deposit{
+    background-color: #00b79f;
+    color: #eee;
+}
+
+.movement-type-withdrawal{
+    background-color: #f3442a;
+    color: #eee;
+}
+
+.movement-value{
+    font-size: 1.7rem;
+    margin-left: auto;
+}
+
+.summary{
+    grid-row: 5/6;
+    display: flex;
+    align-items: baseline;
+    padding: 0 0.3rem;
+    margin-top: 1rem;
+}
+
+.summary-label{
+    font-size: 1.7rem;  
+    margin-right: 0.5rem;
+}
+.summary-value{
+    font-size: 2.5rem;
+    margin-right: 2.5rem;
+}
+.summary-value-in,
+.summary-value-interest {
+  color: #00b79f;
+}
+
+.summary-value-out {
+    color: #f3442a;
+}
+
+.btn-sort{
+    margin-left: auto;
+    background: none;
+    font-size: 1.2rem;
+    font-weight: 500;
+    font-family: inherit;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.operation{
+    border-radius: 1rem;
+    padding: 3rem 4rem;
+    color: #333;
+}
+
+.operation-transfer{
+    background-color: #00b79f;
+  }
+  
+.operation-loan{
+    background-color: #f3442a;
+  }
+ 
+  .operation-close {
+    background-color: #fdb850;
+  }  
+
+h2{
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #eee;
+}  
+
+.form{
+    display: grid;
+    grid-template-columns: 2.5fr 2.5fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 0.4rem 1rem;
+}
+
+.form.form-loan{
+    grid-template-columns: 2.5fr 1fr 2.5fr;
+}
+
+.form-label-loan{
+    grid-row: 2;
+}
+
+.form-input{
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    color: #333;
+    padding: 0.3rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 1.5rem;
+    text-align: center;
+    font-family: inherit;
+    transition: all 0.3s;
+}
+
+.form-input:focus{
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.form-label{
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.form-btn{
+    border-radius: 0.5rem;
+    font-size: 1.8rem;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.form-btn:focus{
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+.logout-timer{
+    padding: 0 0.3rem;
+    margin-top: 2rem;
+    text-align: right;
+    font-size: 1.4rem;
+}
+
+.timer{
+    font-weight: 600;
+}
+
+footer{
+    text-align: center;
+    font: 1.4rem;
+    color: #888;
+    padding-top: 3rem;
 }
