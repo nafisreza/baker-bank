@@ -131,6 +131,14 @@ nav{
     margin-right: 2rem;
 }
 
+.index{
+    color: #333;
+    background-color: #f1cc81;
+    padding: .2rem 0.6rem;
+    border-radius: 50%;
+    font-weight: 600;
+}
+
 .movement-date{
     font-size: 1.2rem;
     text-transform: uppercase;
