@@ -43,8 +43,8 @@ const accounts = [
     locale: "en-GB",
   },
   {
-    owner: "Khan Asfi Reza",
-    movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -300, 1500, -1850],
+    owner: "Pranto",
+    movements: [5600, 3100, -160, -720, -3610, -1000, 8900, -300, 1500, -1850],
     interestRate: 1.3, // %
     password: 1234,
     movementsDates: [
@@ -96,10 +96,12 @@ const indexColor = document.querySelector(".form-input-password");
 // Movements
 /////////////////////////////////////////////////////////////
 
-function displayMovements(account) {
+function displayMovements(account, sort = false) {
   containerMovements.innerHTML = "";
 
-  const moves = account.movements;
+  const moves = sort
+    ? account.movements.slice(0).sort((a, b) => a - b)
+    : account.movements;
 
   moves.forEach((move, i) => {
     const type = move > 0 ? "deposit" : "withdrawal";
@@ -239,8 +241,8 @@ btnTransfer.addEventListener("click", function(e){
 
   if(transferAmount > 0 
     && transferAmount <= currentAccount.balance 
-    && receiverAccount.username !== currentAccount.username
-    && receiverAccount.username){
+    && receiverAccount?.username !== currentAccount.username
+    && receiverAccount){
 
       // Transfer Money
       currentAccount.movements.push(-transferAmount);
@@ -313,4 +315,16 @@ btnLoan.addEventListener("click", function(e){
     containerApp.style.opacity = 0;
   }
 );
+
+/////////////////////////////////////////////////////////////
+// Sorting Movements
+/////////////////////////////////////////////////////////////
+
+let sortStatus = false;
+
+btnSort.addEventListener("click", function(e){
+  e.preventDefault();
+  displayMovements(currentAccount, !sortStatus);
+  sortStatus = !sortStatus
+})
 
