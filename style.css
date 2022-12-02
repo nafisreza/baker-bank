@@ -81,7 +81,7 @@ nav{
     gap: 2rem;
 
     /* Login Animation */
-    opacity: ;
+    opacity: 0;
     transition: all 0.3s;
 }
 
@@ -282,7 +282,7 @@ h2{
 
 footer{
     text-align: center;
-    font: 1.4rem;
+    font-size: 1.4rem;
     color: #888;
     padding-top: 3rem;
 }

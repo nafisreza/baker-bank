@@ -3,7 +3,7 @@
 /////////////////////////////////////////////////////////////
 const accounts = [
   {
-    owner: "Nafis Reza",
+    owner: "Nafis",
     movements: [2500, 500, -750, 1200, 3200, -1500, 500, 1200, -1750, 1800],
     interestRate: 1.5, // %
     password: 1234,
@@ -27,6 +27,26 @@ const accounts = [
     movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -300, 1500, -1850],
     interestRate: 1.3, // %
     password: 5678,
+    movementsDates: [
+      "2021-12-11T21:31:17.671Z",
+      "2021-12-27T07:42:02.184Z",
+      "2022-01-05T09:15:04.805Z",
+      "2022-02-14T10:17:24.687Z",
+      "2022-03-12T14:11:59.203Z",
+      "2022-05-16T17:01:17.392Z",
+      "2022-08-10T23:36:17.522Z",
+      "2022-09-03T12:51:31.491Z",
+      "2022-09-18T06:41:26.394Z",
+      "2022-09-21T08:11:36.276Z",
+    ],
+    currency: "EUR",
+    locale: "en-GB",
+  },
+  {
+    owner: "Khan Asfi Reza",
+    movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -300, 1500, -1850],
+    interestRate: 1.3, // %
+    password: 1234,
     movementsDates: [
       "2021-12-11T21:31:17.671Z",
       "2021-12-27T07:42:02.184Z",
@@ -92,7 +112,7 @@ function displayMovements(account) {
     containerMovements.insertAdjacentHTML("afterbegin", html);
   });
 }
-displayMovements(accounts[0]);
+
 
 /////////////////////////////////////////////////////////////
 // Summary
@@ -123,7 +143,7 @@ function displaySummary(account) {
   labelSumInterest.textContent = `${interest}$`;
 }
 
-displaySummary(accounts[0]);
+
 
 /////////////////////////////////////////////////////////////
 // Balance
@@ -135,7 +155,19 @@ function displayBalance(account){
   labelBalance.textContent = `${account.balance}$`;
 }
 
-displayBalance(accounts[0])
+/////////////////////////////////////////////////////////////
+// Update UI
+/////////////////////////////////////////////////////////////
+
+  function updateUI() {
+  // Display movements
+    displayMovements(currentAccount);
+  // Display balance
+    displayBalance(currentAccount);
+  // Display summary
+    displaySummary(currentAccount);
+}
+
 
 /////////////////////////////////////////////////////////////
 // Username Generator
@@ -146,9 +178,42 @@ function createUsernames(accounts){
     account.username = account.owner  // Selecting the account owner
     .split(" ").join("")              // Removing spaces between first and last name
     .toLowerCase()                    // Transforming into lowercase
-
-    console.log(account.username)
   })
 }
 
 createUsernames(accounts)
+
+/////////////////////////////////////////////////////////////
+// Login
+/////////////////////////////////////////////////////////////
+
+let currentAccount;
+
+btnLogin.addEventListener("click", function(e){
+  e.preventDefault();
+
+  currentAccount = accounts.find(
+    (account) => account.username === inputLoginUsername.value
+  );
+  
+  if(currentAccount?.password === Number(inputLoginPassword.value)){
+    // Welcoming the user
+    labelWelcome.textContent = `Welcome back, 
+    ${currentAccount.owner
+      .split(' ')          // Only the first name of the user will be displayed. 
+      .at(0)}`;
+
+    // Updating the UI
+    containerApp.style.opacity = 1;   
+    updateUI();
+  } else{
+     labelWelcome.textContent = "Invalid Login!";
+     labelWelcome.style.color = "red"
+  }
+
+    // Clearing fields
+    inputLoginUsername.value = inputLoginPassword.value = '';
+    inputLoginPassword.blur();
+
+    
+})
