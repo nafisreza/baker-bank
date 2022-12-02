@@ -280,6 +280,19 @@ h2{
     font-weight: 600;
 }
 
+.logout-btn{
+    background-color: #c33535;
+    font-size: 1.6rem;
+    font-family: inherit;
+    padding: 0.6rem;
+    color: white;
+    border-radius: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-left: auto;
+}
+
 footer{
     text-align: center;
     font-size: 1.4rem;

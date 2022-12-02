@@ -81,6 +81,7 @@ const btnTransfer = document.querySelector(".form-btn-transfer");
 const btnLoan = document.querySelector(".form-btn-loan");
 const btnClose = document.querySelector(".form-btn-close");
 const btnSort = document.querySelector(".btn-sort");
+const btnLogout = document.querySelector(".logout-btn");
 const inputLoginUsername = document.querySelector(".login-input-username");
 const inputLoginPassword = document.querySelector(".login-input-password");
 const inputTransferTo = document.querySelector(".form-input-to");
@@ -89,6 +90,7 @@ const inputLoanAmount = document.querySelector(".form-input-loan-amount");
 const inputCloseUsername = document.querySelector(".form-input-username");
 const inputClosePassword = document.querySelector(".form-input-password");
 const indexColor = document.querySelector(".form-input-password");
+
 
 /////////////////////////////////////////////////////////////
 // Movements
@@ -111,7 +113,7 @@ function displayMovements(account) {
 
     containerMovements.insertAdjacentHTML("afterbegin", html);
   });
-}
+};
 
 
 /////////////////////////////////////////////////////////////
@@ -141,7 +143,7 @@ function displaySummary(account) {
     .reduce((acc, interestedAmount) => acc + interestedAmount, 0);  // Summing the array of interested amounts
 
   labelSumInterest.textContent = `${interest}$`;
-}
+};
 
 
 
@@ -153,7 +155,7 @@ function displayBalance(account){
   account.balance = account.movements.reduce((acc, move) => acc + move, 0);
 
   labelBalance.textContent = `${account.balance}$`;
-}
+};
 
 /////////////////////////////////////////////////////////////
 // Update UI
@@ -166,7 +168,7 @@ function displayBalance(account){
     displayBalance(currentAccount);
   // Display summary
     displaySummary(currentAccount);
-}
+};
 
 
 /////////////////////////////////////////////////////////////
@@ -179,7 +181,7 @@ function createUsernames(accounts){
     .split(" ").join("")              // Removing spaces between first and last name
     .toLowerCase()                    // Transforming into lowercase
   })
-}
+};
 
 createUsernames(accounts)
 
@@ -202,7 +204,8 @@ btnLogin.addEventListener("click", function(e){
     ${currentAccount.owner
       .split(' ')          // Only the first name of the user will be displayed. 
       .at(0)}`;
-
+      
+      labelWelcome.style.color = "#444"
     // Updating the UI
     containerApp.style.opacity = 1;   
     updateUI();
@@ -216,4 +219,98 @@ btnLogin.addEventListener("click", function(e){
     inputLoginPassword.blur();
 
     
-})
+});
+
+/////////////////////////////////////////////////////////////
+// Transfer
+/////////////////////////////////////////////////////////////
+
+btnTransfer.addEventListener("click", function(e){
+  e.preventDefault();
+
+  const receiverAccount = accounts.find(
+    (account) => account.username === inputTransferTo.value);
+
+  const transferAmount = Number(inputTransferAmount.value);
+
+  // Clearing input fields
+  inputTransferTo.value = inputTransferAmount.value = '';
+  inputTransferAmount.blur()
+
+  if(transferAmount > 0 
+    && transferAmount <= currentAccount.balance 
+    && receiverAccount.username !== currentAccount.username
+    && receiverAccount.username){
+
+      // Transfer Money
+      currentAccount.movements.push(-transferAmount);
+      receiverAccount.movements.push(transferAmount);
+      // Update UI
+      updateUI();
+      // Show Success Message
+      labelWelcome.textContent = "Transaction Successful!"
+      labelWelcome.style.color = "green"
+    } else {
+      labelWelcome.textContent = "Transaction failed!"
+      labelWelcome.style.color = "red"
+    }
+});
+
+/////////////////////////////////////////////////////////////
+// Loan
+/////////////////////////////////////////////////////////////
+
+btnLoan.addEventListener("click", function(e){
+  e.preventDefault();
+
+  const loanAmount = Number(inputLoanAmount.value);
+  if(loanAmount > 0){
+    // Granting Loan
+    currentAccount.movements.push(loanAmount);
+    // UI Update
+    updateUI();
+    // Show Success Message
+    labelWelcome.textContent = "Loan Successful!"
+    labelWelcome.style.color = "green"
+  } else {
+    labelWelcome.textContent = "Loan failed!"
+    labelWelcome.style.color = "red"
+  }
+    // Clearing input fields
+    inputLoanAmount.value = inputLoanAmount.value = '';
+    inputLoanAmount.blur();
+});
+
+/////////////////////////////////////////////////////////////
+// Closing Account
+/////////////////////////////////////////////////////////////
+  btnClose.addEventListener("click", function(e){
+    e.preventDefault();
+    if( currentAccount.username === inputCloseUsername.value 
+      && currentAccount.password == Number(inputClosePassword.value)){
+      const index = accounts.findIndex(
+      (account) => account.username === currentAccount.username);
+
+      // Deleting account
+      accounts.splice(index, 1);
+
+      // Hiding UI
+      containerApp.style.opacity = 0;
+
+      // Success Message
+      labelWelcome.textContent = "Account Deleted!";
+} else{
+      labelWelcome.textContent = "Wrong Username or Password!";
+}
+});
+
+/////////////////////////////////////////////////////////////
+// Logging Out
+/////////////////////////////////////////////////////////////
+
+  btnLogout.addEventListener("click", function(e){
+  e.preventDefault();
+    containerApp.style.opacity = 0;
+  }
+);
+
