@@ -105,11 +105,12 @@ function displayMovements(account, sort = false) {
 
   moves.forEach((move, i) => {
     const type = move > 0 ? "deposit" : "withdrawal";
+    const formattedMove = formatCurrency(move, account.locale, account.currency)
     const html = `
       <div class="movement-row">
         <div class="movement-type movement-type-${type}">${i + 1} ${type}</div>
         <div class="movement-date">7 Days Ago</div>
-        <div class="movement-value">${move}$</div> 
+        <div class="movement-value">${formattedMove}</div> 
       </div>
       `;
 
@@ -128,14 +129,14 @@ function displaySummary(account) {
     .filter((move) => move > 0)                         // Getting the array of deposits
     .reduce((acc, deposit) => acc + deposit, 0);        // Summing up the deposits array
 
-  labelSumIn.textContent = `${incoming}$`;
+  labelSumIn.textContent = formatCurrency(incoming, account.locale, account.currency);
 
   //Outgoing
   const outgoing = account.movements
     .filter((move) => move < 0)                         // Getting the array of withdrawals
     .reduce((acc, withdrawal) => acc + withdrawal, 0);  // Summing up the withdrawals array
 
-  labelSumOut.textContent = `${outgoing}$`;
+  labelSumOut.textContent = formatCurrency(outgoing, account.locale, account.currency);
 
   //Interest
   const interest = account.movements
@@ -144,7 +145,7 @@ function displaySummary(account) {
     .filter((interest) => interest >= 1)                            // Only Interest greater than 1% will be accepted (Varies from bank to bank)
     .reduce((acc, interestedAmount) => acc + interestedAmount, 0);  // Summing the array of interested amounts
 
-  labelSumInterest.textContent = `${interest}$`;
+  labelSumInterest.textContent = formatCurrency(interest, account.locale, account.currency);
 };
 
 
@@ -156,7 +157,7 @@ function displaySummary(account) {
 function displayBalance(account){
   account.balance = account.movements.reduce((acc, move) => acc + move, 0);
 
-  labelBalance.textContent = `${account.balance}$`;
+  labelBalance.textContent = formatCurrency(account.balance, account.locale, account.currency);
 };
 
 /////////////////////////////////////////////////////////////
@@ -171,6 +172,17 @@ function displayBalance(account){
   // Display summary
     displaySummary(currentAccount);
 };
+
+/////////////////////////////////////////////////////////////
+// Formatting Currency
+/////////////////////////////////////////////////////////////
+
+function formatCurrency(value, locale, currency) {
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: currency,
+  }).format(value);
+}
 
 
 /////////////////////////////////////////////////////////////
