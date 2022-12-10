@@ -217,12 +217,27 @@ btnLogin.addEventListener("click", function(e){
     labelWelcome.textContent = `Welcome back, 
     ${currentAccount.owner
       .split(' ')          // Only the first name of the user will be displayed. 
-      .at(0)}`;
-      
+      .at(0)}`;      
       labelWelcome.style.color = "#444"
+
     // Updating the UI
     containerApp.style.opacity = 1;   
     updateUI();
+
+    // Displaying current date
+    const currentTime = new Date();
+    const options = {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric'
+    }
+      labelDate.textContent = new Intl.DateTimeFormat(
+        currentAccount.locale, 
+        options
+        ).format(currentTime);
+
   } else{
      labelWelcome.textContent = "Invalid Login!";
      labelWelcome.style.color = "red"
