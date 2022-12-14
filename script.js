@@ -94,9 +94,51 @@ const inputCloseUsername = document.querySelector(".form-input-username");
 const inputClosePassword = document.querySelector(".form-input-password");
 const indexColor = document.querySelector(".form-input-password");
 
+/////////////////////////////////////////////////////////////
+// Username Generator
+/////////////////////////////////////////////////////////////
+
+function createUsernames(accounts){
+  accounts.forEach((account) => {
+    account.username = account.owner  // Selecting the account owner
+    .split(" ").join("")              // Removing spaces between first and last name
+    .toLowerCase()                    // Transforming into lowercase
+  })
+};
+
+createUsernames(accounts)
 
 /////////////////////////////////////////////////////////////
-// Movements
+// Day Calculator
+/////////////////////////////////////////////////////////////
+
+function formatMoveDate(date, locale){
+  const calculateDays = (date1, date2) =>
+  Math.round(Math.abs(date2 - date1) / 86400000);           // 1 Day = 24 * 60 * 60 * 1000 = 86400000 miliseconds
+  
+  const daysPassed = calculateDays(new Date(), date);
+
+  if (daysPassed === 0) return "Today";
+  if (daysPassed === 1) return "Yesterday";
+  if (daysPassed <= 7) return `${daysPassed} days ago`;
+
+  return new Intl.DateTimeFormat(locale).format(date);
+}
+
+/////////////////////////////////////////////////////////////
+// Formatting Currency
+/////////////////////////////////////////////////////////////
+
+function formatCurrency(value, locale, currency) {
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: currency,
+  }).format(value);
+}
+
+
+/////////////////////////////////////////////////////////////
+// Display Movements
 /////////////////////////////////////////////////////////////
 
 function displayMovements(account, sort = false) {
@@ -108,10 +150,11 @@ function displayMovements(account, sort = false) {
 
   moves.forEach((move, i) => {
     const type = move > 0 ? "deposit" : "withdrawal";
-    const formattedMove = formatCurrency(move, account.locale, account.currency)
 
     const date = new Date(account.movementsDates[i]);
     const displayDate = formatMoveDate(date, account.locale);
+
+    const formattedMove = formatCurrency(move, account.locale, account.currency)
     const html = `
       <div class="movement-row">
         <div class="movement-type movement-type-${type}">${i + 1} ${type}</div>
@@ -124,9 +167,18 @@ function displayMovements(account, sort = false) {
   });
 };
 
+/////////////////////////////////////////////////////////////
+// Display Balance
+/////////////////////////////////////////////////////////////
+
+function displayBalance(account){
+  account.balance = account.movements.reduce((acc, move) => acc + move, 0);
+
+  labelBalance.textContent = formatCurrency(account.balance, account.locale, account.currency);
+};
 
 /////////////////////////////////////////////////////////////
-// Summary
+// Display Summary
 /////////////////////////////////////////////////////////////
 
 function displaySummary(account) {
@@ -155,17 +207,6 @@ function displaySummary(account) {
 };
 
 
-
-/////////////////////////////////////////////////////////////
-// Balance
-/////////////////////////////////////////////////////////////
-
-function displayBalance(account){
-  account.balance = account.movements.reduce((acc, move) => acc + move, 0);
-
-  labelBalance.textContent = formatCurrency(account.balance, account.locale, account.currency);
-};
-
 /////////////////////////////////////////////////////////////
 // Update UI
 /////////////////////////////////////////////////////////////
@@ -180,49 +221,7 @@ function displayBalance(account){
 };
 
 /////////////////////////////////////////////////////////////
-// Formatting Currency
-/////////////////////////////////////////////////////////////
-
-function formatCurrency(value, locale, currency) {
-  return new Intl.NumberFormat(locale, {
-    style: "currency",
-    currency: currency,
-  }).format(value);
-}
-
-/////////////////////////////////////////////////////////////
-// Day Calculator
-/////////////////////////////////////////////////////////////
-
-function formatMoveDate(date, locale){
-  const calculateDays = (date1, date2) =>
-  Math.round(Math.abs(date2 - date1) / 86400000);           // 1 Day = 24 * 60 * 60 * 1000 = 86400000 miliseconds
-  
-  const daysPassed = calculateDays(new Date(), date);
-
-  if (daysPassed === 0) return "Today";
-  if (daysPassed === 1) return "Yesterday";
-  if (daysPassed <= 7) return `${daysPassed} days ago`;
-
-  return new Intl.DateTimeFormat(locale).format(date);
-}
-
-/////////////////////////////////////////////////////////////
-// Username Generator
-/////////////////////////////////////////////////////////////
-
-function createUsernames(accounts){
-  accounts.forEach((account) => {
-    account.username = account.owner  // Selecting the account owner
-    .split(" ").join("")              // Removing spaces between first and last name
-    .toLowerCase()                    // Transforming into lowercase
-  })
-};
-
-createUsernames(accounts)
-
-/////////////////////////////////////////////////////////////
-// Login
+// Implementing Login
 /////////////////////////////////////////////////////////////
 
 let currentAccount, timer;
@@ -277,7 +276,7 @@ btnLogin.addEventListener("click", function(e){
 });
 
 /////////////////////////////////////////////////////////////
-// Transfer
+// Implementing Transfers
 /////////////////////////////////////////////////////////////
 
 btnTransfer.addEventListener("click", function(e){
@@ -300,8 +299,14 @@ btnTransfer.addEventListener("click", function(e){
       // Transfer Money
       currentAccount.movements.push(-transferAmount);
       receiverAccount.movements.push(transferAmount);
+
+      // Add transfer date
+      currentAccount.movementsDates.push(new Date().toISOString());
+      receiverAccount.movementsDates.push(new Date().toISOString());
+
       // Update UI
       updateUI();
+
       // Show Success Message
       labelWelcome.textContent = "Transaction Successful!"
       labelWelcome.style.color = "green"
@@ -312,7 +317,7 @@ btnTransfer.addEventListener("click", function(e){
 });
 
 /////////////////////////////////////////////////////////////
-// Loan
+// Implementing Loan
 /////////////////////////////////////////////////////////////
 
 btnLoan.addEventListener("click", function(e){
@@ -320,10 +325,15 @@ btnLoan.addEventListener("click", function(e){
 
   const loanAmount = Number(inputLoanAmount.value);
   if(loanAmount > 0){
-    // Granting Loan
+    // Adding Movement
     currentAccount.movements.push(loanAmount);
+
+    // Add loan date
+    currentAccount.movementsDates.push(new Date().toISOString());
+
     // UI Update
     updateUI();
+
     // Show Success Message
     labelWelcome.textContent = "Loan Successful!"
     labelWelcome.style.color = "green"
@@ -360,16 +370,6 @@ btnLoan.addEventListener("click", function(e){
 });
 
 /////////////////////////////////////////////////////////////
-// Logging Out
-/////////////////////////////////////////////////////////////
-
-  btnLogout.addEventListener("click", function(e){
-  e.preventDefault();
-    containerApp.style.opacity = 0;
-  }
-);
-
-/////////////////////////////////////////////////////////////
 // Sorting Movements
 /////////////////////////////////////////////////////////////
 
@@ -382,7 +382,7 @@ btnSort.addEventListener("click", function(e){
 })
 
 /////////////////////////////////////////////////////////////
-// Timer
+// Logout Timer
 /////////////////////////////////////////////////////////////
 
 function timeOut(){
@@ -407,3 +407,12 @@ function timeOut(){
   timer = setInterval(clock, 1000);
 }
 
+/////////////////////////////////////////////////////////////
+// Logging Out
+/////////////////////////////////////////////////////////////
+
+  btnLogout.addEventListener("click", function(e){
+  e.preventDefault();
+    containerApp.style.opacity = 0;
+  }
+);
