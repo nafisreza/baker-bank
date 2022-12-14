@@ -414,5 +414,6 @@ function timeOut(){
   btnLogout.addEventListener("click", function(e){
   e.preventDefault();
     containerApp.style.opacity = 0;
+    labelWelcome.textContent = "Login to get started!";
   }
 );
